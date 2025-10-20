@@ -1,64 +1,26 @@
-2025/10/17 13:16:07 main.go:95: === PrintAgent started at 2025-10-17T13:16:07+07:00 ===
-2025/10/17 13:16:07 main.go:77: 🚀 PrintAgent started on http://127.0.0.1:8081
-2025/10/17 14:03:04 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:03:07 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:03:20 main.go:208: 🖨️ Printing 1908 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:03:20 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1908 bytes
-2025/10/17 14:10:54 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:10:56 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:11:08 main.go:208: 🖨️ Printing 1915 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:11:09 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1915 bytes
-2025/10/17 14:14:50 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:14:52 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:14:58 main.go:208: 🖨️ Printing 1914 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:14:58 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1914 bytes
-2025/10/17 14:15:49 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:15:51 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:15:57 main.go:208: 🖨️ Printing 1914 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:15:57 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1914 bytes
-2025/10/17 14:16:53 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:16:55 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:17:09 main.go:208: 🖨️ Printing 1914 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:17:09 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1914 bytes
-2025/10/17 14:17:55 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:17:57 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:18:03 main.go:208: 🖨️ Printing 1914 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:18:03 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1914 bytes
-2025/10/17 14:21:57 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:21:58 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:22:05 main.go:208: 🖨️ Printing 9782 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:22:05 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 9782 bytes
-2025/10/17 14:27:41 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:27:42 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:27:49 main.go:208: 🖨️ Printing 4411 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:27:49 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4411 bytes
-2025/10/17 14:29:53 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:29:54 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:30:05 main.go:208: 🖨️ Printing 4411 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:30:05 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4411 bytes
-2025/10/17 14:35:25 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:35:26 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:37:18 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:37:19 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:37:27 main.go:208: 🖨️ Printing 4411 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:37:27 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4411 bytes
-2025/10/17 14:43:29 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:43:30 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:43:37 main.go:208: 🖨️ Printing 4413 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:43:37 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4413 bytes
-2025/10/17 14:49:51 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:49:53 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:49:58 main.go:208: 🖨️ Printing 4415 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:49:58 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4415 bytes
-2025/10/17 14:54:11 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:54:13 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 14:54:19 main.go:208: 🖨️ Printing 4414 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 14:54:19 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 4414 bytes
-2025/10/17 14:59:15 main.go:130: 📋 Fetching printer list...
-2025/10/17 14:59:16 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 15:12:28 main.go:130: 📋 Fetching printer list...
-2025/10/17 15:12:30 main.go:138: ✅ Found 3 printer(s)
-2025/10/17 15:12:39 main.go:208: 🖨️ Printing 6167 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 15:12:39 main.go:215: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 6167 bytes
-2025/10/17 15:14:42 main.go:68: 🛑 Shutting down server...
-2025/10/17 15:14:42 main.go:82: ✅ Server stopped gracefully
+2025/10/17 16:05:51 main.go:96: === PrintAgent started at 2025-10-17T16:05:51+07:00 ===
+2025/10/17 16:05:51 main.go:78: 🚀 PrintAgent started on http://127.0.0.1:8081
+2025/10/17 16:05:58 main.go:131: 📋 Fetching printer list...
+2025/10/17 16:06:01 main.go:139: ✅ Found 3 printer(s)
+2025/10/17 16:06:05 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
+2025/10/17 16:06:05 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
+2025/10/17 16:06:05 main.go:213: 🖨️ Printing 1211 bytes to: EPSON LX-300+II ESC/P
+2025/10/17 16:06:06 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1211 bytes
+2025/10/17 16:45:15 main.go:69: 🛑 Shutting down server...
+2025/10/17 16:45:15 main.go:83: ✅ Server stopped gracefully
+2025/10/17 17:42:12 main.go:96: === PrintAgent started at 2025-10-17T17:42:12+07:00 ===
+2025/10/17 17:42:12 main.go:78: 🚀 PrintAgent started on http://127.0.0.1:8081
+2025/10/17 17:43:03 main.go:131: 📋 Fetching printer list...
+2025/10/17 17:43:05 main.go:139: ✅ Found 3 printer(s)
+2025/10/17 17:43:18 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
+2025/10/17 17:43:18 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
+2025/10/17 17:43:18 main.go:213: 🖨️ Printing 1132 bytes to: EPSON LX-300+II ESC/P
+2025/10/17 17:43:18 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1132 bytes
+2025/10/17 17:46:55 main.go:131: 📋 Fetching printer list...
+2025/10/17 17:46:57 main.go:139: ✅ Found 3 printer(s)
+2025/10/17 17:47:05 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
+2025/10/17 17:47:05 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
+2025/10/17 17:47:05 main.go:213: 🖨️ Printing 1132 bytes to: EPSON LX-300+II ESC/P
+2025/10/17 17:47:05 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1132 bytes
+2025/10/17 18:47:32 main.go:69: 🛑 Shutting down server...
+2025/10/17 18:47:32 main.go:83: ✅ Server stopped gracefully

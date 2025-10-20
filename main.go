@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -196,12 +197,16 @@ func printHandler(w http.ResponseWriter, r *http.Request) {
 	if !strings.HasPrefix(printerName, `\\`) {
 		offline, err := isPrinterOffline(printerName)
 		if err != nil {
-			logger.Printf("⚠️ Cannot check printer status for %s: %v (assuming online)", printerName, err)
+			// Jangan block printing jika check gagal
+			logger.Printf("⚠️ Cannot check printer status for %s: %v (continuing anyway)", printerName, err)
 		} else if offline {
 			logger.Printf("❌ Printer is offline: %s", printerName)
 			http.Error(w, fmt.Sprintf("Printer is offline: %s", printerName), http.StatusServiceUnavailable)
 			return
 		}
+	} else {
+		// Skip offline check untuk network printers
+		logger.Printf("⏭️ Skipping offline check for network printer: %s", printerName)
 	}
 
 	// Kirim ke printer
@@ -357,39 +362,98 @@ func listPrintersWMIC() ([]string, error) {
 
 // isPrinterOffline: cek status WorkOffline untuk printer lokal
 func isPrinterOffline(printerName string) (bool, error) {
-	ps := fmt.Sprintf(`$p = Get-Printer -Name "%s" -ErrorAction SilentlyContinue; if ($p) { $p.WorkOffline } else { Write-Output "NOTFOUND" }`,
-		escapeForPS(printerName))
+	// Escape printer name untuk PowerShell
+	escapedName := escapeForPS(printerName)
+	
+	// Gunakan script yang lebih robust
+	ps := fmt.Sprintf(`
+		try {
+			$p = Get-Printer -Name '%s' -ErrorAction Stop
+			Write-Output $p.WorkOffline
+		} catch {
+			Write-Output "NOTFOUND"
+		}
+	`, escapedName)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "powershell", "-NoProfile", "-NonInteractive", "-Command", ps)
-	out, err := cmd.Output()
-	if err != nil {
-		return false, fmt.Errorf("failed to check printer status: %v", err)
+	cmd := exec.CommandContext(ctx, "powershell", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", ps)
+	
+	// Capture both stdout and stderr
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	
+	err := cmd.Run()
+	outStr := strings.TrimSpace(stdout.String())
+	errStr := strings.TrimSpace(stderr.String())
+	
+	// Log untuk debugging
+	logger.Printf("🔍 Checking printer: %s", printerName)
+	if errStr != "" {
+		logger.Printf("⚠️ PowerShell stderr: %s", errStr)
 	}
-
-	s := strings.TrimSpace(strings.ToLower(string(out)))
-
-	if s == "true" {
+	
+	if err != nil {
+		// Jika error, coba fallback ke WMIC
+		logger.Printf("⚠️ PowerShell failed for %s: %v, trying WMIC fallback", printerName, err)
+		return isPrinterOfflineWMIC(printerName)
+	}
+	
+	outLower := strings.ToLower(outStr)
+	
+	if outLower == "true" {
+		logger.Printf("📴 Printer offline: %s", printerName)
 		return true, nil
 	}
-	if s == "false" {
+	if outLower == "false" {
+		logger.Printf("✅ Printer online: %s", printerName)
 		return false, nil
 	}
-	if strings.Contains(s, "notfound") {
+	if strings.Contains(outLower, "notfound") {
+		logger.Printf("❓ Printer not found: %s", printerName)
 		return false, fmt.Errorf("printer not found: %s", printerName)
 	}
-
+	
 	// Unknown status, assume online
+	logger.Printf("⚠️ Unknown printer status for %s: %s (assuming online)", printerName, outStr)
+	return false, nil
+}
+
+func isPrinterOfflineWMIC(printerName string) (bool, error) {
+	// Escape printer name untuk WMIC
+	escapedName := strings.ReplaceAll(printerName, `\`, `\\`)
+	
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	
+	// WMIC query
+	query := fmt.Sprintf(`wmic printer where "Name='%s'" get WorkOffline /value`, escapedName)
+	cmd := exec.CommandContext(ctx, "cmd", "/c", query)
+	
+	out, err := cmd.Output()
+	if err != nil {
+		logger.Printf("⚠️ WMIC also failed for %s: %v (assuming online)", printerName, err)
+		return false, nil // Assume online if we can't check
+	}
+	
+	outStr := strings.ToLower(strings.TrimSpace(string(out)))
+	
+	// Parse WMIC output: "WorkOffline=TRUE" or "WorkOffline=FALSE"
+	if strings.Contains(outStr, "workoffline=true") {
+		logger.Printf("📴 Printer offline (WMIC): %s", printerName)
+		return true, nil
+	}
+	
+	logger.Printf("✅ Printer online (WMIC): %s", printerName)
 	return false, nil
 }
 
 func escapeForPS(s string) string {
-	s = strings.ReplaceAll(s, "`", "``")
-	s = strings.ReplaceAll(s, `"`, "`\"")
-	s = strings.ReplaceAll(s, "$", "`$")
-	return s
+    // Di dalam single quotes PowerShell, hanya ' yang perlu di-escape dengan ''
+    s = strings.ReplaceAll(s, "'", "''")
+    return s
 }
 
 // ----------------- Winspool (WritePrinter) -----------------
