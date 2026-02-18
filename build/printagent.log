@@ -1,26 +1,2 @@
-2025/10/17 16:05:51 main.go:96: === PrintAgent started at 2025-10-17T16:05:51+07:00 ===
-2025/10/17 16:05:51 main.go:78: 🚀 PrintAgent started on http://127.0.0.1:8081
-2025/10/17 16:05:58 main.go:131: 📋 Fetching printer list...
-2025/10/17 16:06:01 main.go:139: ✅ Found 3 printer(s)
-2025/10/17 16:06:05 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
-2025/10/17 16:06:05 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
-2025/10/17 16:06:05 main.go:213: 🖨️ Printing 1211 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 16:06:06 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1211 bytes
-2025/10/17 16:45:15 main.go:69: 🛑 Shutting down server...
-2025/10/17 16:45:15 main.go:83: ✅ Server stopped gracefully
-2025/10/17 17:42:12 main.go:96: === PrintAgent started at 2025-10-17T17:42:12+07:00 ===
-2025/10/17 17:42:12 main.go:78: 🚀 PrintAgent started on http://127.0.0.1:8081
-2025/10/17 17:43:03 main.go:131: 📋 Fetching printer list...
-2025/10/17 17:43:05 main.go:139: ✅ Found 3 printer(s)
-2025/10/17 17:43:18 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
-2025/10/17 17:43:18 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
-2025/10/17 17:43:18 main.go:213: 🖨️ Printing 1132 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 17:43:18 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1132 bytes
-2025/10/17 17:46:55 main.go:131: 📋 Fetching printer list...
-2025/10/17 17:46:57 main.go:139: ✅ Found 3 printer(s)
-2025/10/17 17:47:05 main.go:393: 🔍 Checking printer: EPSON LX-300+II ESC/P
-2025/10/17 17:47:05 main.go:420: ⚠️ Unknown printer status for EPSON LX-300+II ESC/P:  (assuming online)
-2025/10/17 17:47:05 main.go:213: 🖨️ Printing 1132 bytes to: EPSON LX-300+II ESC/P
-2025/10/17 17:47:05 main.go:220: ✅ Print success - Printer: EPSON LX-300+II ESC/P, Size: 1132 bytes
-2025/10/17 18:47:32 main.go:69: 🛑 Shutting down server...
-2025/10/17 18:47:32 main.go:83: ✅ Server stopped gracefully
+2026/02/18 16:08:20 main.go:96: === PrintAgent started at 2026-02-18T16:08:20+07:00 ===
+2026/02/18 16:08:20 main.go:78: 🚀 PrintAgent started on http://127.0.0.1:8081

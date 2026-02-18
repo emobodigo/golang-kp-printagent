@@ -15,9 +15,10 @@ echo ℹ️  You can minimize the console window
 echo.
 pause
 
-set "APP_PATH=%~dp0CoralisPrintAgent.exe"
+set "APP_PATH=%~dp0CoralisPrintAgent-x86.exe"
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" set "APP_PATH=%~dp0CoralisPrintAgent-x64.exe"
+if "%PROCESSOR_ARCHITEW6432%"=="AMD64" set "APP_PATH=%~dp0CoralisPrintAgent-x64.exe"
 set "STARTUP_FOLDER=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-set "SHORTCUT_PATH=%STARTUP_FOLDER%\CoralisPrintAgent.lnk"
 
 echo Creating shortcut in Startup folder...
 

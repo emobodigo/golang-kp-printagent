@@ -21,7 +21,16 @@ if errorlevel 1 (
 )
 
 set "SERVICE_NAME=CoralisPrintAgent"
-set "EXE_PATH=%~dp0CoralisPrintAgent.exe"
+set "EXE_PATH=%~dp0CoralisPrintAgent-x86.exe"
+
+rem === Detect architecture ===
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
+    set "EXE_PATH=%~dp0CoralisPrintAgent-x64.exe"
+) else if "%PROCESSOR_ARCHITEW6432%"=="AMD64" (
+    set "EXE_PATH=%~dp0CoralisPrintAgent-x64.exe"
+) else (
+    set "EXE_PATH=%~dp0CoralisPrintAgent-x86.exe"
+)
 
 echo Creating service...
 sc create %SERVICE_NAME% binPath= "%EXE_PATH%" start= auto DisplayName= "Coralis Print Agent"

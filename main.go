@@ -173,6 +173,12 @@ func printHandler(w http.ResponseWriter, r *http.Request) {
 
 	printerName := strings.TrimSpace(values.Get("printerName"))
 	text := values.Get("text")
+	documentName := strings.TrimSpace(values.Get("documentName"))
+	
+	// Default to "PrintAgent Job" if documentName is not provided
+	if documentName == "" {
+		documentName = "PrintAgent Job"
+	}
 
 	// Validasi input
 	if printerName == "" {
@@ -211,7 +217,7 @@ func printHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Kirim ke printer
 	logger.Printf("🖨️ Printing %d bytes to: %s", len(text), printerName)
-	if err := sendToPrinter(printerName, []byte(text)); err != nil {
+	if err := sendToPrinter(printerName, []byte(text), documentName); err != nil {
 		logger.Printf("❌ Print failed - Printer: %s, Error: %v", printerName, err)
 		http.Error(w, fmt.Sprintf("Print failed: %v", err), http.StatusInternalServerError)
 		return
@@ -458,7 +464,7 @@ func escapeForPS(s string) string {
 
 // ----------------- Winspool (WritePrinter) -----------------
 
-func sendToPrinter(printerName string, data []byte) error {
+func sendToPrinter(printerName string, data []byte, docName string) error {
 	if len(data) == 0 {
 		return fmt.Errorf("empty data")
 	}
@@ -492,7 +498,7 @@ func sendToPrinter(printerName string, data []byte) error {
 	defer procClosePrinter.Call(uintptr(hPrinter))
 
 	// Prepare DOC_INFO_1 structure
-	docName, _ := syscall.UTF16PtrFromString("PrintAgent Job")
+	docNamePtr, _ := syscall.UTF16PtrFromString(docName)
 	dataType, _ := syscall.UTF16PtrFromString("RAW")
 
 	type docInfo1 struct {
@@ -502,7 +508,7 @@ func sendToPrinter(printerName string, data []byte) error {
 	}
 
 	di := docInfo1{
-		pDocName:    docName,
+		pDocName:    docNamePtr,
 		pOutputFile: nil,
 		pDatatype:   dataType,
 	}
