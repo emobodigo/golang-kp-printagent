@@ -6,8 +6,17 @@
 
 set -e
 
+# === Fix PATH for non-interactive shells (bash build-win7.sh) ===
+# Go is often not in PATH when scripts run via bash directly
+export PATH="$PATH:/usr/local/go/bin:/usr/local/bin:/opt/homebrew/bin:$HOME/go/bin:$HOME/.local/bin"
+
+# Also source common shell configs if they exist
+[ -f "$HOME/.zshrc" ]     && source "$HOME/.zshrc"     2>/dev/null || true
+[ -f "$HOME/.zprofile" ]  && source "$HOME/.zprofile"  2>/dev/null || true
+[ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile" 2>/dev/null || true
+
 GO120="$HOME/go/bin/go1.20.14"
-GO_CMD="$GO120"
+GO_CMD=""
 
 echo ""
 echo "================================================"
@@ -15,13 +24,37 @@ echo "   Building CoralisPrintAgent (Windows 7 Safe)"
 echo "================================================"
 echo ""
 
-# === Check if Go 1.20 is available ===
-if ! command -v go1.20.14 &>/dev/null && [ ! -f "$GO120" ]; then
+# === Find base Go installation ===
+if ! command -v go &>/dev/null; then
+    echo "❌ Go (any version) not found in PATH."
+    echo "   Please install Go from https://go.dev/dl/"
+    echo "   Then re-run this script."
+    exit 1
+fi
+
+echo "🔍 Detected Go: $(go version)"
+
+# === Check if Go 1.20 is already available ===
+if command -v go1.20.14 &>/dev/null; then
+    GO_CMD="go1.20.14"
+    echo "✅ Found go1.20.14 in PATH"
+elif [ -f "$GO120" ]; then
+    GO_CMD="$GO120"
+    echo "✅ Found go1.20.14 at $GO120"
+else
+    echo ""
     echo "⚠️  Go 1.20.14 not found. Installing..."
     echo "   (Go 1.21+ does NOT support Windows 7)"
     echo ""
     go install golang.org/dl/go1.20.14@latest
-    go1.20.14 download
+    # Refresh PATH after install
+    export PATH="$PATH:$HOME/go/bin"
+    if command -v go1.20.14 &>/dev/null; then
+        GO_CMD="go1.20.14"
+    else
+        GO_CMD="$GO120"
+    fi
+    "$GO_CMD" download
     echo ""
     echo "✅ Go 1.20.14 installed."
 fi
