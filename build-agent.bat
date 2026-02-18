@@ -25,24 +25,52 @@ mkdir build
 mkdir dist
 
 rem === Build Go binary WITH console window ===
-echo 🔨 Compiling Go binary...
+echo 🔨 Compiling Go binary (64-bit)...
 set CGO_ENABLED=0
 set GOOS=windows
 set GOARCH=amd64
-go build -ldflags="-s -w" -o build\CoralisPrintAgent.exe main.go
+go build -ldflags="-s -w" -o build\CoralisPrintAgent-x64.exe main.go
 
 if errorlevel 1 (
     echo.
-    echo ❌ Build failed!
+    echo ❌ Build 64-bit failed!
     pause
     exit /b 1
 )
+
+echo 🔨 Compiling Go binary (32-bit)...
+set CGO_ENABLED=0
+set GOOS=windows
+set GOARCH=386
+go build -ldflags="-s -w" -o build\CoralisPrintAgent-x86.exe main.go
+
+if errorlevel 1 (
+    echo.
+    echo ❌ Build 32-bit failed!
+    pause
+    exit /b 1
+)
+
+rem === Create launcher that auto-detects architecture ===
+echo 📝 Creating auto-detect launcher...
+(
+echo @echo off
+echo if "%%PROCESSOR_ARCHITECTURE%%"=="AMD64" ^(
+echo     CoralisPrintAgent-x64.exe
+echo ^) else if "%%PROCESSOR_ARCHITEW6432%%"=="AMD64" ^(
+echo     CoralisPrintAgent-x64.exe
+echo ^) else ^(
+echo     CoralisPrintAgent-x86.exe
+echo ^)
+) > build\CoralisPrintAgent.bat
 
 rem === Create README ===
 echo 📝 Creating README...
 (
 echo CoralisPrintAgent - Local Printer Service
 echo ==========================================
+echo.
+echo COMPATIBILITY: Windows 7/8/10/11 (32-bit and 64-bit)
 echo.
 echo INSTALLATION OPTIONS:
 echo.
@@ -109,7 +137,16 @@ echo     exit /b 1
 echo ^)
 echo.
 echo set "SERVICE_NAME=CoralisPrintAgent"
-echo set "EXE_PATH=%%~dp0CoralisPrintAgent.exe"
+echo set "EXE_PATH=%%~dp0CoralisPrintAgent-x86.exe"
+echo.
+echo rem === Detect architecture ===
+echo if "%%PROCESSOR_ARCHITECTURE%%"=="AMD64" ^(
+echo     set "EXE_PATH=%%~dp0CoralisPrintAgent-x64.exe"
+echo ^) else if "%%PROCESSOR_ARCHITEW6432%%"=="AMD64" ^(
+echo     set "EXE_PATH=%%~dp0CoralisPrintAgent-x64.exe"
+echo ^) else ^(
+echo     set "EXE_PATH=%%~dp0CoralisPrintAgent-x86.exe"
+echo ^)
 echo.
 echo echo Creating service...
 echo sc create %%SERVICE_NAME%% binPath= "%%EXE_PATH%%" start= auto DisplayName= "Coralis Print Agent"
@@ -197,9 +234,10 @@ echo echo ℹ️  You can minimize the console window
 echo echo.
 echo pause
 echo.
-echo set "APP_PATH=%%~dp0CoralisPrintAgent.exe"
+echo set "APP_PATH=%%~dp0CoralisPrintAgent-x86.exe"
+echo if "%%PROCESSOR_ARCHITECTURE%%"=="AMD64" set "APP_PATH=%%~dp0CoralisPrintAgent-x64.exe"
+echo if "%%PROCESSOR_ARCHITEW6432%%"=="AMD64" set "APP_PATH=%%~dp0CoralisPrintAgent-x64.exe"
 echo set "STARTUP_FOLDER=%%APPDATA%%\Microsoft\Windows\Start Menu\Programs\Startup"
-echo set "SHORTCUT_PATH=%%STARTUP_FOLDER%%\CoralisPrintAgent.lnk"
 echo.
 echo echo Creating shortcut in Startup folder...
 echo.
@@ -291,7 +329,13 @@ echo echo.
 echo echo ================================================
 echo echo.
 echo.
-echo CoralisPrintAgent.exe
+echo if "%%PROCESSOR_ARCHITECTURE%%"=="AMD64" ^(
+echo     CoralisPrintAgent-x64.exe
+echo ^) else if "%%PROCESSOR_ARCHITEW6432%%"=="AMD64" ^(
+echo     CoralisPrintAgent-x64.exe
+echo ^) else ^(
+echo     CoralisPrintAgent-x86.exe
+echo ^)
 echo.
 echo echo.
 echo echo CoralisPrintAgent has stopped.
@@ -382,7 +426,9 @@ echo 📁 Build folder: build\
 echo 📦 Package: dist\CoralisPrintAgent-v1.0-%GIT_HASH%.zip
 echo.
 echo 📋 Package contents:
-echo    - CoralisPrintAgent.exe    (Main executable^)
+echo    - CoralisPrintAgent-x64.exe (Main executable 64-bit^)
+echo    - CoralisPrintAgent-x86.exe (Main executable 32-bit^)
+echo    - CoralisPrintAgent.bat     (Auto-detect launcher^)
 echo    - INSTALL.bat              (Quick installer wizard^)
 echo    - install-service.bat      (Install as Windows Service^)
 echo    - uninstall-service.bat    (Remove service^)
@@ -408,7 +454,7 @@ if /i "%TEST%"=="Y" (
     echo.
     echo Starting CoralisPrintAgent with console...
     cd build
-    start cmd /k "title CoralisPrintAgent Console && CoralisPrintAgent.exe"
+    start cmd /k "title CoralisPrintAgent Console && CoralisPrintAgent.bat"
     timeout /t 2 >nul
     echo.
     echo Opening browser...
