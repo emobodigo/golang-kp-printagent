@@ -17,6 +17,39 @@ if errorlevel 1 (
     exit /b 1
 )
 
+rem === Check Go version - Windows 7 requires Go 1.20 or lower ===
+echo 🔍 Checking Go version...
+for /f "tokens=3" %%v in ('go version') do set GOVERSION=%%v
+echo    Detected: %GOVERSION%
+
+rem === Try to use Go 1.20 if available (required for Windows 7 support) ===
+set GO_CMD=go
+where go1.20.14 >nul 2>nul
+if not errorlevel 1 (
+    set GO_CMD=go1.20.14
+    echo ✅ Using Go 1.20.14 for Windows 7 compatible build
+) else (
+    rem Check if current Go >= 1.21 (incompatible with Windows 7)
+    echo %GOVERSION% | findstr /r "go1\.2[1-9]\|go1\.[3-9][0-9]" >nul 2>nul
+    if not errorlevel 1 (
+        echo.
+        echo ⚠️  WARNING: %GOVERSION% does NOT support Windows 7!
+        echo    Go 1.21+ requires Windows 10 minimum.
+        echo    Binaries built with this version WILL CRASH on Windows 7.
+        echo.
+        echo    To build Windows 7 compatible binaries, run this command first:
+        echo    go install golang.org/dl/go1.20.14@latest ^&^& go1.20.14 download
+        echo.
+        set /p CONTINUE="Continue anyway (for Windows 10+ only)? (Y/N): "
+        if /i not "%CONTINUE%"=="Y" (
+            pause
+            exit /b 1
+        )
+    ) else (
+        echo ✅ Go version is compatible with Windows 7
+    )
+)
+
 rem === Cleanup old builds ===
 echo 🧹 Cleaning old builds...
 if exist build rmdir /s /q build
@@ -29,7 +62,7 @@ echo 🔨 Compiling Go binary (64-bit)...
 set CGO_ENABLED=0
 set GOOS=windows
 set GOARCH=amd64
-go build -ldflags="-s -w" -o build\CoralisPrintAgent-x64.exe main.go
+%GO_CMD% build -ldflags="-s -w" -o build\CoralisPrintAgent-x64.exe main.go
 
 if errorlevel 1 (
     echo.
@@ -42,7 +75,7 @@ echo 🔨 Compiling Go binary (32-bit)...
 set CGO_ENABLED=0
 set GOOS=windows
 set GOARCH=386
-go build -ldflags="-s -w" -o build\CoralisPrintAgent-x86.exe main.go
+%GO_CMD% build -ldflags="-s -w" -o build\CoralisPrintAgent-x86.exe main.go
 
 if errorlevel 1 (
     echo.
